@@ -17,8 +17,7 @@ const ticketSchema = new mongoose.Schema(
             match: [/^\S+@\S+\.\S+$/, "Please provide a valid email address"],
         },
         promoCode: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "PromoCode",
+            type: String,
             default: null,
         },
         experienceId: {

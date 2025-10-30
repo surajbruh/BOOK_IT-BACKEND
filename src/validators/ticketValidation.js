@@ -12,8 +12,7 @@ export const bookTicketValidation = [
         .isEmail().withMessage("Please provide a valid email address"),
 
     check("promoCode")
-        .optional()
-        .isMongoId().withMessage("Invalid promoCode ID format"),
+        .optional(),
 
     check("experienceId")
         .notEmpty().withMessage("Experience ID is required")

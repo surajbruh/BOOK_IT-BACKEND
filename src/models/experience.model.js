@@ -20,10 +20,6 @@ const experienceSchema = new mongoose.Schema({
         required: true,
         default: 999,
     },
-    taxes: {
-        type: Number,
-        default: 0,
-    },
     availableDates: [
         {
             date: {

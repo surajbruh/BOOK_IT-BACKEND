@@ -12,7 +12,7 @@ dotenv.config({
 const app = express()
 const port = process.env.PORT
 
-const origin = ["http://localhost:5174"]
+const origin = [process.env.FRONTEND_URL]
 app.use(cors({
     origin
 }))

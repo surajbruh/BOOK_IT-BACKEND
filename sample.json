@@ -1,0 +1,72 @@
+[
+    {
+        "code": "SAVE10",
+        "discountType": "PERCENT",
+        "value": 10,
+        "expiresAt": "2025-12-31T23:59:59.000Z",
+        "isActive": true
+    },
+    {
+        "code": "FLAT100",
+        "discountType": "FLAT",
+        "value": 100,
+        "expiresAt": "2025-11-30T23:59:59.000Z",
+        "isActive": true
+    },
+    {
+        "code": "NEWUSER20",
+        "discountType": "PERCENT",
+        "value": 20,
+        "expiresAt": "2026-01-15T23:59:59.000Z",
+        "isActive": true
+    },
+    {
+        "code": "DIWALI300",
+        "discountType": "FLAT",
+        "value": 300,
+        "expiresAt": "2025-11-10T23:59:59.000Z",
+        "isActive": true
+    },
+    {
+        "code": "FIRSTBOOK15",
+        "discountType": "PERCENT",
+        "value": 15,
+        "expiresAt": "2025-12-15T23:59:59.000Z",
+        "isActive": true
+    },
+    {
+        "code": "WINTER50",
+        "discountType": "FLAT",
+        "value": 50,
+        "expiresAt": "2025-12-31T23:59:59.000Z",
+        "isActive": true
+    },
+    {
+        "code": "WELCOME5",
+        "discountType": "PERCENT",
+        "value": 5,
+        "expiresAt": "2026-03-01T23:59:59.000Z",
+        "isActive": true
+    },
+    {
+        "code": "SUMMER250",
+        "discountType": "FLAT",
+        "value": 250,
+        "expiresAt": "2026-05-01T23:59:59.000Z",
+        "isActive": true
+    },
+    {
+        "code": "FLASH40",
+        "discountType": "PERCENT",
+        "value": 40,
+        "expiresAt": "2025-11-05T23:59:59.000Z",
+        "isActive": false
+    },
+    {
+        "code": "SUPER500",
+        "discountType": "FLAT",
+        "value": 500,
+        "expiresAt": "2026-01-01T23:59:59.000Z",
+        "isActive": true
+    }
+]

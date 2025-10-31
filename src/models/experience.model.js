@@ -13,7 +13,6 @@ const experienceSchema = new mongoose.Schema({
     },
     location: {
         type: String,
-        required: true,
         trim: true,
     },
     imageUrl: {

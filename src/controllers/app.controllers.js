@@ -5,64 +5,84 @@ import Ticket from "../models/ticket.model.js"
 export const getExperiences = async (req, res) => {
     try {
         const experiences = await Experience.find()
-        res.status(200).json(experiences)
+        res.status(200).json({
+            success: true,
+            data: experiences
+        })
     } catch (error) {
         console.error("GET EXPRIENCES CONTROLLER ERROR")
-        res.status(500).json({ message: "Something went wrong" })
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong"
+        })
     }
 }
 
 export const getExperience = async (req, res) => {
     try {
         const { id } = req.params
-        if (!id) return res.status(400).json({ messeage: "Experience ID is required" })
+        if (!id) return res.status(400).json({
+            success: false,
+            message: "Experience ID is required"
+        })
 
         const experience = await Experience.findById({ _id: id })
-        if (!experience) return res.status(400).json({ messeage: "Experience is undefined" })
+        if (!experience) return res.status(400).json({
+            success: false,
+            message: "Experience is undefined"
+        })
 
         res.status(200).json(experience)
     } catch (error) {
         console.error("GET EXPRIENCE CONTROLLER ERROR")
-        res.status(500).json({ message: "Something went wrong" })
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong"
+        })
     }
 }
 
 export const bookTicket = async (req, res) => {
     try {
-        const { fullname, email, promoCode, experienceId, date, time, quantity, paid } = req.body;
+        const { fullname, email, promoCode, experienceId, date, time, quantity, paid } = req.body
 
-        const experience = await Experience.findById(experienceId);
+        if (!fullname || !email || !experienceId || !date || !time || !quantity) {
+            return res.status(400).json({
+                success: false,
+                message: "Missing required booking details",
+            })
+        }
+
+        const experience = await Experience.findById(experienceId)
         if (!experience) {
-            return res.status(404).json({ message: "Experience not found" });
+            return res.status(404).json({
+                success: false,
+                message: "Experience not found"
+            })
         }
 
-        let slotFound = false;
-        for (let dateObj of experience.availableDates) {
-            for (let slot of dateObj.times) {
-                if (slot.time === time) {
-                    slotFound = true;
+        const dateObj = experience.availableDates.find(d => d.date === date)
+        if (!dateObj) return res.status(404).json({
+            success: false,
+            message: `Date '${date}' not found.`
+        })
 
-                    // Check availability
-                    if (slot.slotsLeft < quantity) {
-                        return res.status(400).json({
-                            message: `Only ${slot.slotsLeft} slot(s) left for ${time}.`,
-                        });
-                    }
+        const slot = dateObj.times.find(t => t.time === time)
+        if (!slot) return res.status(404).json({
+            success: false,
+            message: `Time slot '${time}' not found.`
+        })
 
-                    // Deduct the booked quantity
-                    slot.slotsLeft -= quantity;
-
-                    // Mark sold out if no slots left
-                    if (slot.slotsLeft === 0) {
-                        slot.isSoldOut = true;
-                    }
-                }
-            }
+        if (slot.slotsLeft < quantity) {
+            return res.status(400).json({
+                success: false,
+                message: `Only ${slot.slotsLeft} slot(s) left for ${time}.`,
+            })
         }
 
-        if (!slotFound) {
-            return res.status(404).json({ message: `Time slot '${time}' not found.` });
-        }
+        slot.slotsLeft -= quantity
+        slot.isSoldOut = slot.slotsLeft === 0
+        await experience.save()
 
         const newTicket = await Ticket.create({
             fullname,
@@ -73,24 +93,21 @@ export const bookTicket = async (req, res) => {
             time,
             quantity,
             paid,
-        });
+        })
 
-        await experience.save();
         return res.status(201).json({
             success: true,
             message: "Ticket booked successfully!",
-            ticket: newTicket,
-        });
+            data: newTicket,
+        })
     } catch (error) {
-        console.error("Error booking ticket:", error);
-
-        return res.status(500).json({
+        console.error("BOOK TICKET CONTROLLER ERROR:", error.message, error.stack)
+        res.status(500).json({
             success: false,
             message: "An error occurred while booking the ticket.",
-            error: error.message,
-        });
+        })
     }
-};
+}
 
 
 export const validatePromo = async (req, res) => {
